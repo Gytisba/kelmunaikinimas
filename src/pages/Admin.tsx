@@ -27,10 +27,9 @@ const Admin = () => {
         const { data, error } = await supabase
           .from('admins')
           .select('*')
-          .eq('id', session.user.id)
-          .single();
+          .eq('id', session.user.id);
         
-        if (data && !error) {
+        if (data && data.length > 0 && !error) {
           setIsAdmin(true);
         } else {
           toast.error("Jūs neturite administratoriaus teisių");
@@ -53,10 +52,9 @@ const Admin = () => {
           const { data, error } = await supabase
             .from('admins')
             .select('*')
-            .eq('id', session.user.id)
-            .single();
+            .eq('id', session.user.id);
           
-          if (data && !error) {
+          if (data && data.length > 0 && !error) {
             setIsAdmin(true);
           } else {
             toast.error("Jūs neturite administratoriaus teisių");
