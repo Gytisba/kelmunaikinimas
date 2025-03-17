@@ -19,26 +19,32 @@ const Admin = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      
-      if (session) {
-        // Check if user is an admin
-        const { data, error } = await supabase
-          .from('admins')
-          .select('*')
-          .eq('id', session.user.id);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setSession(session);
         
-        if (data && data.length > 0 && !error) {
-          setIsAdmin(true);
-        } else {
-          toast.error("Jūs neturite administratoriaus teisių");
-          await supabase.auth.signOut();
-          setSession(null);
+        if (session) {
+          // Check if user is an admin using the data query
+          const { data, error } = await supabase
+            .from('admins')
+            .select('*')
+            .eq('id', session.user.id);
+          
+          if (data && data.length > 0 && !error) {
+            setIsAdmin(true);
+          } else {
+            console.error("Admin check failed:", error);
+            toast.error("Jūs neturite administratoriaus teisių");
+            await supabase.auth.signOut();
+            setSession(null);
+          }
         }
+      } catch (error) {
+        console.error("Session check error:", error);
+        toast.error("Įvyko klaida tikrinant sesiją");
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
 
     checkSession();
@@ -48,24 +54,31 @@ const Admin = () => {
         setSession(session);
         setLoading(true);
         
-        if (session) {
-          const { data, error } = await supabase
-            .from('admins')
-            .select('*')
-            .eq('id', session.user.id);
-          
-          if (data && data.length > 0 && !error) {
-            setIsAdmin(true);
+        try {
+          if (session) {
+            // Check if user is an admin
+            const { data, error } = await supabase
+              .from('admins')
+              .select('*')
+              .eq('id', session.user.id);
+            
+            if (data && data.length > 0 && !error) {
+              setIsAdmin(true);
+            } else {
+              console.error("Admin check failed:", error);
+              toast.error("Jūs neturite administratoriaus teisių");
+              await supabase.auth.signOut();
+              setSession(null);
+            }
           } else {
-            toast.error("Jūs neturite administratoriaus teisių");
-            await supabase.auth.signOut();
-            setSession(null);
+            setIsAdmin(false);
           }
-        } else {
+        } catch (error) {
+          console.error("Auth state change error:", error);
           setIsAdmin(false);
+        } finally {
+          setLoading(false);
         }
-        
-        setLoading(false);
       }
     );
 
