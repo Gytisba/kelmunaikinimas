@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,12 +38,26 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .insert([
+          { 
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone || null,
+            message: formData.message
+          }
+        ]);
+        
+      if (error) {
+        throw error;
+      }
+      
       toast.success("Jūsų žinutė išsiųsta! Susisieksime su jumis artimiausiu metu.");
       setFormData({
         name: "",
@@ -50,8 +65,12 @@ const Contact = () => {
         phone: "",
         message: ""
       });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Klaida siunčiant žinutę. Prašome bandyti dar kartą.");
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
