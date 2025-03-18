@@ -25,18 +25,22 @@ const Benefits = () => {
   }, []);
 
   const benefits = [
-    "Gręžiami bet kokio skermens kelmai",
-    "Nesunaikinama aplinkinė infrastruktūra",
-    "Galima išsyk sodinti kitą augalą į tą pačią vietą",
-    "Nelieka didelės duobės, kaip išrovus kelmą",
+    "Dirba profesionalų komanda su patikima įranga",
+    "Teikiamos garantijos visiems atliktiems darbams",
+    "Paslaugos teikiamos visus metus, nepriklausomai nuo sezono",
+    "Naudojama šiuolaikinė technika užtikrina aukštą darbų kokybę",
+    "Atliekami darbai ir sunkiai pasiekiamose vietose",
+    "Specialistai laikosi visų saugumo standartų",
+    "Tinkama įranga bet kokio dydžio projektams",
+    "Patirtis dirbant tiek su privačiais, tiek su verslo klientais"
   ];
 
   return (
     <section id="privalumai" className="section-padding bg-accent">
       <div className={`section-container ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-        <h2 className="section-title">Kodėl verta rinktis profesionalų kelmų naikinimą?</h2>
+        <h2 className="section-title">Kodėl verta rinktis mus?</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
           {benefits.map((benefit, index) => (
             <div 
               key={index}

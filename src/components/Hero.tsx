@@ -38,31 +38,40 @@ const Hero = () => {
             Profesionalios paslaugos
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6 leading-tight">
-            Kelmų naikinimas – efektyvus būdas išvalyti teritoriją
+            Profesionalios aplinkos tvarkymo paslaugos
           </h1>
           <p className="text-lg md:text-xl text-white opacity-90 mb-8 max-w-2xl">
-            Profesionalios paslaugos visoje Lietuvoje
+            Teikiame visapusiškas aplinkos tvarkymo paslaugas visoje Lietuvoje – 
+            nuo kelmų šalinimo iki sudėtingų arboristikos darbų
           </p>
-          <a
-            href="#kontaktai"
-            className="inline-flex items-center btn-primary text-lg"
-          >
-            Susisiekite
-            <svg
-              className="ml-2 w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="flex flex-wrap gap-4">
+            <a
+              href="#kontaktai"
+              className="inline-flex items-center btn-primary text-lg"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              ></path>
-            </svg>
-          </a>
+              Susisiekite
+              <svg
+                className="ml-2 w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                ></path>
+              </svg>
+            </a>
+            <a
+              href="#paslaugos"
+              className="inline-flex items-center px-6 py-3 bg-white bg-opacity-20 backdrop-blur-sm text-white font-medium rounded-lg hover:bg-opacity-30 transition-all duration-300"
+            >
+              Sužinoti daugiau
+            </a>
+          </div>
         </div>
       </div>
 

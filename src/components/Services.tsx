@@ -26,7 +26,7 @@ const Services = () => {
   return (
     <section id="paslaugos" className="section-padding bg-muted">
       <div className={`section-container ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-        <h2 className="section-title">Paslaugos</h2>
+        <h2 className="section-title">Kelmų naikinimas</h2>
         <div className="space-y-8">
           <div className="prose max-w-none">
             <p className="section-text">
@@ -64,6 +64,42 @@ const Services = () => {
                 </p>
               </li>
             </ul>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="public/lovable-uploads/01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png" 
+                  alt="Kelmų frezavimo įranga" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-forest-600 mb-2">Moderni įranga</h3>
+                <p className="text-gray-700">
+                  Naudojame galingą ir modernią kelmų frezavimo techniką, kuri efektyviai pašalina 
+                  bet kokio dydžio kelmus iki žemės paviršiaus lygio.
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="public/lovable-uploads/1190008d-2396-48d9-a23c-871bf2e65f87.png" 
+                  alt="Prieš ir po kelmo frezavimo" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-forest-600 mb-2">Akivaizdūs rezultatai</h3>
+                <p className="text-gray-700">
+                  Mūsų teikiamos paslaugos rezultatai akivaizdžiai matomi prieš ir po darbų. 
+                  Visiems darbams suteikiame garantiją.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

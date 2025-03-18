@@ -50,6 +50,12 @@ const About = () => {
                   ŽIEMĄ, PAVASARĮ, VASARĄ, RUDENĮ! Aplinkos tvarkymas su mumis 
                   neturi sezoniškumo apribojimų!
                 </p>
+                <p>
+                  Mūsų komanda apjungia profesionalių arboristų žinias su pramoninio alpinizmo 
+                  įgūdžiais, todėl galime pasiūlyti visapusiškas aplinkos tvarkymo ir priežiūros 
+                  paslaugas. Mūsų ekspertai pasirengę įgyvendinti sudėtingiausius projektus, 
+                  užtikrindami aukščiausią kokybę ir saugumą.
+                </p>
               </div>
             </div>
           </div>
