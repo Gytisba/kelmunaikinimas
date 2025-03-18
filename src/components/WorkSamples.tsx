@@ -37,7 +37,7 @@ const WorkSamples = () => {
       caption: "Profesionali kelmo frezavimo technika darbui teritorijose"
     },
     {
-      src: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png",
+      src: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//469529985_122127053516508071_3104949043769155223_n.jpg",
       alt: "Kelmo frezavimo įranga iš arti",
       caption: "Mūsų naudojama frezavimo technika sutvarko bet kokio dydžio kelmus"
     },
