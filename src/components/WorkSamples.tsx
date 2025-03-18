@@ -32,17 +32,17 @@ const WorkSamples = () => {
 
   const workImages = [
     {
-      src: "public/lovable-uploads/01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png",
+      src: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//0b8f6b8d-290a-4863-9602-1dc5d962610a.png",
       alt: "Kelmo frezavimo įranga",
       caption: "Profesionali kelmo frezavimo technika darbui teritorijose"
     },
     {
-      src: "public/lovable-uploads/f6f13d09-e38a-4b3d-8988-7a7e064e95c0.png",
+      src: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//0b8f6b8d-290a-4863-9602-1dc5d962610a.png",
       alt: "Kelmo frezavimo įranga iš arti",
       caption: "Mūsų naudojama frezavimo technika sutvarko bet kokio dydžio kelmus"
     },
     {
-      src: "public/lovable-uploads/1190008d-2396-48d9-a23c-871bf2e65f87.png",
+      src: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//0b8f6b8d-290a-4863-9602-1dc5d962610a.png",
       alt: "Prieš ir po kelmo frezavimo",
       caption: "Rezultatas prieš ir po kelmo frezavimo darbų"
     }

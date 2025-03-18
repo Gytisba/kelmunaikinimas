@@ -70,7 +70,7 @@ const Services = () => {
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="aspect-video overflow-hidden">
                 <img 
-                  src="public/lovable-uploads/01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png" 
+                  src="https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//1190008d-2396-48d9-a23c-871bf2e65f87.png" 
                   alt="Kelmų frezavimo įranga" 
                   className="w-full h-full object-cover"
                 />
@@ -87,7 +87,7 @@ const Services = () => {
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="aspect-video overflow-hidden">
                 <img 
-                  src="public/lovable-uploads/1190008d-2396-48d9-a23c-871bf2e65f87.png" 
+                  src="https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png" 
                   alt="Prieš ir po kelmo frezavimo" 
                   className="w-full h-full object-cover"
                 />
