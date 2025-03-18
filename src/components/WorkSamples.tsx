@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { 
   Carousel,
@@ -28,6 +29,11 @@ const WorkSamples = () => {
       filename: "1190008d-2396-48d9-a23c-871bf2e65f87.png",
       alt: "Prieš ir po kelmo frezavimo",
       caption: "Rezultatas prieš ir po kelmo frezavimo darbų"
+    },
+    {
+      filename: "0b8f6b8d-290a-4863-9602-1dc5d962610a.png",
+      alt: "Kelmo frezavimo rezultatas",
+      caption: "Profesionaliai pašalintas kelmas - visiškai lygi teritorija"
     }
   ];
 
@@ -67,19 +73,24 @@ const WorkSamples = () => {
             let publicUrl;
 
             if (!existingFiles || existingFiles.length === 0) {
-              const response = await fetch(`/lovable-uploads/${image.filename}`);
-              const blob = await response.blob();
+              // For the new image that's already in Supabase, we don't need to upload it
+              if (image.filename === "0b8f6b8d-290a-4863-9602-1dc5d962610a.png") {
+                console.log("New image already exists in Supabase, skipping upload");
+              } else {
+                const response = await fetch(`/lovable-uploads/${image.filename}`);
+                const blob = await response.blob();
 
-              const { data, error } = await supabase
-                .storage
-                .from('project_images')
-                .upload(image.filename, blob, {
-                  upsert: true
-                });
+                const { data, error } = await supabase
+                  .storage
+                  .from('project_images')
+                  .upload(image.filename, blob, {
+                    upsert: true
+                  });
 
-              if (error) {
-                console.error('Error uploading image:', error);
-                throw error;
+                if (error) {
+                  console.error('Error uploading image:', error);
+                  throw error;
+                }
               }
             }
 
