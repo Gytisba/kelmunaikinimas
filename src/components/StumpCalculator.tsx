@@ -8,7 +8,7 @@ const StumpCalculator = () => {
   const [area, setArea] = useState<number>(0);
   const [price, setPrice] = useState<number>(0);
   
-  const PRICE_PER_SQ_CM = 1.5;
+  const PRICE_PER_SQ_CM = 1; // Changed from 1.5 to 1
 
   useEffect(() => {
     // Calculate area in square centimeters (πr²)
@@ -79,7 +79,7 @@ const StumpCalculator = () => {
         </div>
         
         <div className="text-sm text-gray-600 mt-2">
-          <p>Kaina apskaičiuota pagal tarifą: 1.5€ už 1 cm²</p>
+          <p>Kaina apskaičiuota pagal tarifą: 1€ už 1 cm²</p>
           <p className="mt-1 text-xs italic">Pastaba: Galutinė kaina gali skirtis priklausomai nuo kelmo būklės ir vietos.</p>
         </div>
       </div>
