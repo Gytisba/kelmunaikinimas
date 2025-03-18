@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import StumpCalculator from "./StumpCalculator";
 
 const Pricing = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -68,12 +69,15 @@ const Pricing = () => {
           </div>
         </div>
         
+        {/* Stump Calculator */}
+        <StumpCalculator />
+        
         <div className="mt-8 text-center">
           <a
             href="#kontaktai"
             className="btn-primary"
           >
-            Sužinoti kainą
+            Sužinoti tikslią kainą
           </a>
         </div>
       </div>
