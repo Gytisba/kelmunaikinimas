@@ -1,8 +1,11 @@
 
 import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [imageUrls, setImageUrls] = useState<{[key: string]: string}>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,6 +24,62 @@ const Services = () => {
     return () => {
       if (element) observer.unobserve(element);
     };
+  }, []);
+
+  // Images to fetch from Supabase
+  const imageFilenames = [
+    "01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png",
+    "1190008d-2396-48d9-a23c-871bf2e65f87.png"
+  ];
+
+  // Upload and get URLs for images
+  useEffect(() => {
+    const handleImages = async () => {
+      setIsLoading(true);
+      
+      try {
+        const urlMap: {[key: string]: string} = {};
+        
+        await Promise.all(imageFilenames.map(async (filename) => {
+          // Check if the image exists in Supabase storage
+          const { data: existingFiles } = await supabase
+            .storage
+            .from('project_images')
+            .list('', {
+              search: filename
+            });
+
+          // If the image doesn't exist, upload it
+          if (!existingFiles || existingFiles.length === 0) {
+            const response = await fetch(`/lovable-uploads/${filename}`);
+            const blob = await response.blob();
+
+            await supabase
+              .storage
+              .from('project_images')
+              .upload(filename, blob, {
+                upsert: true
+              });
+          }
+
+          // Get the public URL
+          const { data } = supabase
+            .storage
+            .from('project_images')
+            .getPublicUrl(filename);
+
+          urlMap[filename] = data.publicUrl;
+        }));
+
+        setImageUrls(urlMap);
+      } catch (error) {
+        console.error('Error handling images:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    handleImages();
   }, []);
 
   return (
@@ -67,39 +126,47 @@ const Services = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="aspect-video overflow-hidden">
-                <img 
-                  src="public/lovable-uploads/01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png" 
-                  alt="Kelmų frezavimo įranga" 
-                  className="w-full h-full object-cover"
-                />
+            {isLoading ? (
+              <div className="col-span-full flex justify-center py-8">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-forest-700"></div>
               </div>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-forest-600 mb-2">Moderni įranga</h3>
-                <p className="text-gray-700">
-                  Naudojame galingą ir modernią kelmų frezavimo techniką, kuri efektyviai pašalina 
-                  bet kokio dydžio kelmus iki žemės paviršiaus lygio.
-                </p>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="aspect-video overflow-hidden">
-                <img 
-                  src="public/lovable-uploads/1190008d-2396-48d9-a23c-871bf2e65f87.png" 
-                  alt="Prieš ir po kelmo frezavimo" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-forest-600 mb-2">Akivaizdūs rezultatai</h3>
-                <p className="text-gray-700">
-                  Mūsų teikiamos paslaugos rezultatai akivaizdžiai matomi prieš ir po darbų. 
-                  Visiems darbams suteikiame garantiją.
-                </p>
-              </div>
-            </div>
+            ) : (
+              <>
+                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src={imageUrls["01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png"]} 
+                      alt="Kelmų frezavimo įranga" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold text-forest-600 mb-2">Moderni įranga</h3>
+                    <p className="text-gray-700">
+                      Naudojame galingą ir modernią kelmų frezavimo techniką, kuri efektyviai pašalina 
+                      bet kokio dydžio kelmus iki žemės paviršiaus lygio.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src={imageUrls["1190008d-2396-48d9-a23c-871bf2e65f87.png"]} 
+                      alt="Prieš ir po kelmo frezavimo" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold text-forest-600 mb-2">Akivaizdūs rezultatai</h3>
+                    <p className="text-gray-700">
+                      Mūsų teikiamos paslaugos rezultatai akivaizdžiai matomi prieš ir po darbų. 
+                      Visiems darbams suteikiame garantiją.
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
