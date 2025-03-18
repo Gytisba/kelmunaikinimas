@@ -87,7 +87,7 @@ const Services = () => {
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="aspect-video overflow-hidden">
                 <img 
-                  src="https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//01bf1b73-2a5d-4bc4-ae0c-ac6319ae6f6d.png" 
+                  src="https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//0b8f6b8d-290a-4863-9602-1dc5d962610a.png" 
                   alt="Prieš ir po kelmo frezavimo" 
                   className="w-full h-full object-cover"
                 />
