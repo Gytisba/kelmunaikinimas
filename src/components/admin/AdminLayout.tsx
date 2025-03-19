@@ -30,7 +30,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0 flex items-center">
-              <h1 className="text-xl font-bold text-forest-700">Kelmų Naikinimas</h1>
+              <h1 className="text-xl font-bold text-forest-700">Kelmų Naikinimas - Žinutės</h1>
             </div>
             <div>
               <Button 

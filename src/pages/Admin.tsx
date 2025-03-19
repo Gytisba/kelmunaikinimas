@@ -21,7 +21,7 @@ const Admin = () => {
       try {
         setLoading(true);
         const { data: { session } } = await supabase.auth.getSession();
-        console.log("Initial session check:", session?.user?.id);
+        console.log("Session check:", session?.user?.id);
         setSession(session);
       } catch (error) {
         console.error("Session check error:", error);
@@ -71,7 +71,7 @@ const Admin = () => {
     }
   };
 
-  // Ensure we show the login page if not authenticated
+  // Show loading indicator while checking session
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -80,6 +80,7 @@ const Admin = () => {
     );
   }
 
+  // Show login form if not authenticated
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
@@ -141,7 +142,7 @@ const Admin = () => {
     );
   }
 
-  // Only render admin content if user is logged in
+  // Show admin content for any authenticated user
   return (
     <AdminLayout>
       <MessagesList />

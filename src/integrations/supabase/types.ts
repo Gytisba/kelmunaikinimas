@@ -65,6 +65,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin_secure: {
+        Args: {
+          user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
