@@ -24,19 +24,20 @@ const Admin = () => {
         setSession(session);
         
         if (session) {
-          // Check if user is an admin using the data query
+          // Check if user is an admin using a more reliable query
           const { data, error } = await supabase
             .from('admins')
             .select('*')
-            .eq('id', session.user.id);
+            .eq('id', session.user.id)
+            .single();
           
-          if (data && data.length > 0 && !error) {
+          if (data && !error) {
             setIsAdmin(true);
+            toast.success("Admin prieiga suteikta");
           } else {
             console.error("Admin check failed:", error);
+            // Don't sign out automatically, just show error
             toast.error("Jūs neturite administratoriaus teisių");
-            await supabase.auth.signOut();
-            setSession(null);
           }
         }
       } catch (error) {
@@ -51,6 +52,7 @@ const Admin = () => {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.id);
         setSession(session);
         setLoading(true);
         
@@ -60,15 +62,16 @@ const Admin = () => {
             const { data, error } = await supabase
               .from('admins')
               .select('*')
-              .eq('id', session.user.id);
+              .eq('id', session.user.id)
+              .single();
             
-            if (data && data.length > 0 && !error) {
+            if (data && !error) {
               setIsAdmin(true);
+              toast.success("Admin prieiga suteikta");
             } else {
-              console.error("Admin check failed:", error);
+              console.error("Admin check failed on auth change:", error, data);
               toast.error("Jūs neturite administratoriaus teisių");
-              await supabase.auth.signOut();
-              setSession(null);
+              // Don't automatically sign out
             }
           } else {
             setIsAdmin(false);
@@ -92,7 +95,7 @@ const Admin = () => {
     setLoggingIn(true);
     
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
@@ -101,7 +104,25 @@ const Admin = () => {
         throw error;
       }
       
+      // Successfully logged in
       toast.success("Sėkmingai prisijungta");
+      
+      // Check if the logged-in user is admin
+      if (data.user) {
+        const { data: adminData, error: adminError } = await supabase
+          .from('admins')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+        
+        if (adminData && !adminError) {
+          setIsAdmin(true);
+          toast.success("Admin prieiga suteikta");
+        } else {
+          console.error("Admin check failed:", adminError);
+          toast.error("Jūs neturite administratoriaus teisių");
+        }
+      }
     } catch (error: any) {
       console.error("Error logging in:", error);
       toast.error(error.message || "Nepavyko prisijungti");
