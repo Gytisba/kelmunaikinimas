@@ -30,13 +30,19 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0 flex items-center">
-              <h1 className="text-xl font-bold text-forest-700">Kelmų Naikinimas Admin</h1>
+              <h1 className="text-xl font-bold text-forest-700">Kelmų Naikinimas</h1>
             </div>
             <div>
               <Button 
                 variant="outline" 
+                onClick={() => navigate("/")}
+                className="mr-4"
+              >
+                Grįžti į pagrindinį puslapį
+              </Button>
+              <Button 
+                variant="outline" 
                 onClick={handleLogout}
-                className="ml-4"
               >
                 Atsijungti
               </Button>
