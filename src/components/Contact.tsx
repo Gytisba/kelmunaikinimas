@@ -1,6 +1,8 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -13,6 +15,9 @@ const Contact = () => {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -38,11 +43,66 @@ const Contact = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    
+    if (file) {
+      // Check if file is an image
+      if (!file.type.startsWith('image/')) {
+        toast.error("Galima įkelti tik nuotraukas.");
+        return;
+      }
+      
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Nuotrauka negali būti didesnė nei 5MB.");
+        return;
+      }
+      
+      setSelectedImage(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setSelectedImage(null);
+      setImagePreview(null);
+    }
+  };
+
+  const clearImageSelection = () => {
+    setSelectedImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
+      let imageUrl = null;
+      
+      // Upload image if one is selected
+      if (selectedImage) {
+        const fileName = `${Date.now()}-${selectedImage.name}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('message_images')
+          .upload(fileName, selectedImage);
+          
+        if (uploadError) {
+          throw new Error(`Klaida įkeliant nuotrauką: ${uploadError.message}`);
+        }
+        
+        imageUrl = fileName;
+      }
+      
+      // Save message to database
       const { error } = await supabase
         .from('messages')
         .insert([
@@ -50,7 +110,8 @@ const Contact = () => {
             name: formData.name,
             email: formData.email,
             phone: formData.phone || null,
-            message: formData.message
+            message: formData.message,
+            image_url: imageUrl
           }
         ]);
         
@@ -65,6 +126,7 @@ const Contact = () => {
         phone: "",
         message: ""
       });
+      clearImageSelection();
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Klaida siunčiant žinutę. Prašome bandyti dar kartą.");
@@ -135,7 +197,7 @@ const Contact = () => {
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                     Vardas
                   </label>
-                  <input
+                  <Input
                     id="name"
                     name="name"
                     type="text"
@@ -151,7 +213,7 @@ const Contact = () => {
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     El. paštas
                   </label>
-                  <input
+                  <Input
                     id="email"
                     name="email"
                     type="email"
@@ -167,7 +229,7 @@ const Contact = () => {
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                     Telefonas
                   </label>
-                  <input
+                  <Input
                     id="phone"
                     name="phone"
                     type="tel"
@@ -182,7 +244,7 @@ const Contact = () => {
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                     Žinutė
                   </label>
-                  <textarea
+                  <Textarea
                     id="message"
                     name="message"
                     rows={4}
@@ -192,6 +254,41 @@ const Contact = () => {
                     className="input-field"
                     placeholder="Jūsų žinutė..."
                   />
+                </div>
+                
+                <div>
+                  <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+                    Nuotrauka (neprivaloma)
+                  </label>
+                  <Input
+                    id="image"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                    className="input-field"
+                  />
+                  
+                  {imagePreview && (
+                    <div className="mt-2 relative">
+                      <div className="relative w-32 h-32 border border-gray-200 rounded overflow-hidden">
+                        <img 
+                          src={imagePreview} 
+                          alt="Pasirinkta nuotrauka" 
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={clearImageSelection}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                          aria-label="Pašalinti nuotrauką"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="pt-2">
