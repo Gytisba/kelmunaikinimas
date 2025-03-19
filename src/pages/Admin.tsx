@@ -20,24 +20,32 @@ const Admin = () => {
   useEffect(() => {
     const checkSession = async () => {
       try {
+        setLoading(true);
         const { data: { session } } = await supabase.auth.getSession();
+        console.log("Initial session check:", session?.user?.id);
         setSession(session);
         
         if (session) {
-          // Check if user is an admin using a more reliable query
-          const { data, error } = await supabase
-            .from('admins')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-          
-          if (data && !error) {
-            setIsAdmin(true);
-            toast.success("Admin prieiga suteikta");
-          } else {
-            console.error("Admin check failed:", error);
-            // Don't sign out automatically, just show error
-            toast.error("Jūs neturite administratoriaus teisių");
+          // Check if user is an admin
+          try {
+            const { data, error } = await supabase
+              .from('admins')
+              .select('*')
+              .eq('id', session.user.id)
+              .maybeSingle();
+            
+            console.log("Admin check result:", data, error);
+            
+            if (data && !error) {
+              setIsAdmin(true);
+              toast.success("Admin prieiga suteikta");
+            } else {
+              console.error("Admin check failed:", error);
+              toast.error("Jūs neturite administratoriaus teisių");
+            }
+          } catch (adminCheckError) {
+            console.error("Admin check exception:", adminCheckError);
+            toast.error("Klaida tikrinant administratoriaus teises");
           }
         }
       } catch (error) {
@@ -54,32 +62,36 @@ const Admin = () => {
       async (event, session) => {
         console.log("Auth state changed:", event, session?.user?.id);
         setSession(session);
-        setLoading(true);
         
-        try {
-          if (session) {
+        if (session) {
+          try {
+            setLoading(true);
             // Check if user is an admin
             const { data, error } = await supabase
               .from('admins')
               .select('*')
               .eq('id', session.user.id)
-              .single();
+              .maybeSingle();
+            
+            console.log("Auth change admin check:", data, error);
             
             if (data && !error) {
               setIsAdmin(true);
               toast.success("Admin prieiga suteikta");
             } else {
-              console.error("Admin check failed on auth change:", error, data);
+              console.error("Admin check failed on auth change:", error);
+              setIsAdmin(false);
               toast.error("Jūs neturite administratoriaus teisių");
-              // Don't automatically sign out
             }
-          } else {
+          } catch (adminCheckError) {
+            console.error("Auth change admin check exception:", adminCheckError);
             setIsAdmin(false);
+            toast.error("Klaida tikrinant administratoriaus teises");
+          } finally {
+            setLoading(false);
           }
-        } catch (error) {
-          console.error("Auth state change error:", error);
+        } else {
           setIsAdmin(false);
-        } finally {
           setLoading(false);
         }
       }
@@ -113,7 +125,9 @@ const Admin = () => {
           .from('admins')
           .select('*')
           .eq('id', data.user.id)
-          .single();
+          .maybeSingle();
+        
+        console.log("Login admin check:", adminData, adminError);
         
         if (adminData && !adminError) {
           setIsAdmin(true);
@@ -132,6 +146,7 @@ const Admin = () => {
     }
   };
 
+  // Ensure we show the login page if not authenticated or not admin
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -140,7 +155,7 @@ const Admin = () => {
     );
   }
 
-  if (!session || !isAdmin) {
+  if (!session) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
@@ -201,6 +216,37 @@ const Admin = () => {
     );
   }
 
+  // Show admin denied message if logged in but not admin
+  if (!isAdmin) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
+        <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6 text-center">
+          <h1 className="text-2xl font-bold text-center text-red-600 mb-6">Prieiga uždrausta</h1>
+          <p className="mb-6">Jūsų paskyra neturi administratoriaus teisių.</p>
+          
+          <div className="flex flex-col space-y-4">
+            <Button 
+              onClick={async () => {
+                await supabase.auth.signOut();
+                navigate("/admin");
+              }}
+            >
+              Atsijungti
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              onClick={() => navigate("/")}
+            >
+              Grįžti į pagrindinį puslapį
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Only render admin content if user is logged in and is admin
   return (
     <AdminLayout>
       <MessagesList />
