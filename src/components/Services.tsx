@@ -1,13 +1,17 @@
 
 import { useEffect, useState } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isMethodsOpen, setIsMethodsOpen] = useState(false);
-  const isMobile = useIsMobile();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -20,127 +24,113 @@ const Services = () => {
       { threshold: 0.1 }
     );
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    
     const element = document.getElementById("paslaugos");
     if (element) observer.observe(element);
 
     return () => {
       if (element) observer.unobserve(element);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  return (
-    <section id="paslaugos" className="section-padding bg-muted">
-      <div className={`section-container ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-        <h2 className="section-title">Kelmų naikinimas</h2>
-        <div className="space-y-8">
-          {isMobile ? (
-            <Collapsible>
-              <CollapsibleTrigger className="flex justify-between items-center w-full p-4 bg-white rounded-lg shadow-sm">
-                <span className="font-semibold text-forest-600">Apie kelmų naikinimą</span>
-                <ChevronDown className="h-5 w-5 text-forest-500" />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="p-4 bg-white rounded-b-lg shadow-md mt-1">
-                <p className="text-gray-700">
-                  Kelmų naikinimas yra svarbi paslauga, padedanti užtikrinti sklypo tinkamumą įvairioms paskirtims. 
-                  Palikti kelmai ne tik gadina estetinį vaizdą, bet ir gali sukelti įvairias problemas, tokias kaip: 
-                  trukdo pjauti žolę, įrengti kraštovaizdžio elementus ar vykdyti kitus sklypo tvarkymo darbus. 
-                  Dėl šių priežasčių verta investuoti į profesionalų kelmų naikinimą, kuris užtikrina efektyvų, 
-                  saugų ir ilgalaikį sprendimą sklypo priežiūrai.
-                </p>
-              </CollapsibleContent>
-            </Collapsible>
-          ) : (
-            <div className="prose max-w-none">
-              <p className="section-text">
-                Kelmų naikinimas yra svarbi paslauga, padedanti užtikrinti sklypo tinkamumą įvairioms paskirtims. 
-                Palikti kelmai ne tik gadina estetinį vaizdą, bet ir gali sukelti įvairias problemas, tokias kaip: 
-                trukdo pjauti žolę, įrengti kraštovaizdžio elementus ar vykdyti kitus sklypo tvarkymo darbus. 
-                Dėl šių priežasčių verta investuoti į profesionalų kelmų naikinimą, kuris užtikrina efektyvų, 
-                saugų ir ilgalaikį sprendimą sklypo priežiūrai.
-              </p>
-            </div>
-          )}
+  const services = [
+    {
+      id: "tree-cutting",
+      title: "Pavojingų medžių pjovimas",
+      description: "Saugus ir profesionalus pavojingų medžių pjovimas bei genėjimas net ir sudėtingose vietose.",
+      icon: "🌳",
+      link: "/paslauga/pavojingu-medziu-pjovimas",
+      imageSrc: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&w=1000&q=80"
+    },
+    {
+      id: "stump-grinding",
+      title: "Kelmų frezavimas",
+      description: "Efektyvus ir ekologiškas būdas pašalinti medžių kelmus be didelių kasimo darbų.",
+      icon: "🪓",
+      link: "/paslauga/kelmu-frezavimas",
+      imageSrc: "https://images.unsplash.com/photo-1621458036320-4922b2d28b6f?auto=format&fit=crop&w=1000&q=80"
+    },
+    {
+      id: "industrial-climbing",
+      title: "Pramoninis alpinizmas",
+      description: "Specializuota veikla, leidžianti atlikti įvairius darbus sunkiai pasiekiamose vietose.",
+      icon: "🧗",
+      link: "/paslauga/pramoninis-alpinizmas",
+      imageSrc: "https://images.unsplash.com/photo-1610569244414-5e7427e8f3c5?auto=format&fit=crop&w=1000&q=80"
+    }
+  ];
 
-          <Collapsible 
-            open={!isMobile || isMethodsOpen} 
-            onOpenChange={isMobile ? setIsMethodsOpen : undefined}
-            className="bg-white rounded-lg shadow-md glassmorphism"
-          >
-            {isMobile ? (
-              <CollapsibleTrigger className="flex justify-between items-center w-full p-4">
-                <h3 className="text-2xl font-heading font-bold text-forest-600">
-                  Kaip atliekamas kelmų naikinimas?
-                </h3>
-                <ChevronDown className={`h-5 w-5 text-forest-500 transition-transform ${isMethodsOpen ? 'rotate-180' : ''}`} />
-              </CollapsibleTrigger>
-            ) : (
-              <h3 className="text-2xl font-heading font-bold text-forest-600 p-6 mb-0">
-                Kaip atliekamas kelmų naikinimas?
-              </h3>
-            )}
-            
-            <CollapsibleContent className={isMobile ? "px-4 pb-4" : "p-6 pt-0"}>
-              <p className="mb-6 text-gray-700">
-                Pasirinkus profesionalų kelmų naikinimą, darbai atliekami naudojant pažangią techniką, 
-                užtikrinančią greitą ir efektyvų rezultatą. Kelmai gali būti naikinami naudojant šias metodikas:
-              </p>
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <span className="text-forest-500 mr-2">•</span>
-                  <p className="text-gray-700">
-                    <span className="font-semibold">Kelmų frezavimas</span> – greitas ir ekonomiškas 
-                    būdas pašalinti kelmą iki žemės paviršiaus lygio;
-                  </p>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-forest-500 mr-2">•</span>
-                  <p className="text-gray-700">
-                    <span className="font-semibold">Kelmų gręžimas</span> – naudojant galingą kelmų grąžtą, 
-                    kelmo šerdis sutrupinama, o šaknys natūraliai supūva. Šis metodas leidžia apsaugoti 
-                    aplinkinę infrastruktūrą ir yra saugus dirbant arti pastatų ar kitų objektų. Be to, po 
-                    gręžimo nelieka duobių, todėl tą pačią vietą galima naudoti naujiems augalams sodinti.
-                  </p>
-                </li>
-              </ul>
-            </CollapsibleContent>
-          </Collapsible>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="aspect-video overflow-hidden">
-                <img 
-                  src="https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//1190008d-2396-48d9-a23c-871bf2e65f87.png" 
-                  alt="Kelmų frezavimo įranga" 
-                  className="w-full h-full object-cover"
-                />
+  return (
+    <section id="paslaugos" className="section-padding">
+      <div className={`section-container ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
+        <h2 className="section-title">Mūsų paslaugos</h2>
+        <p className="section-text max-w-3xl mb-10">
+          Teikiame profesionalias aplinkos tvarkymo paslaugas, 
+          pasižyminčias aukšta kokybe ir atsakingu požiūriu į darbą. 
+          Plačiau apie kiekvieną paslaugą skaitykite paspaudę ant norimos paslaugos.
+        </p>
+
+        {isMobile ? (
+          <Accordion type="single" collapsible className="w-full">
+            {services.map((service) => (
+              <AccordionItem key={service.id} value={service.id}>
+                <AccordionTrigger className="text-left text-lg font-medium">
+                  <span className="mr-2">{service.icon}</span> {service.title}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="mt-2 mb-4">
+                    <img 
+                      src={service.imageSrc} 
+                      alt={service.title} 
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80";
+                      }}
+                    />
+                    <p className="mb-4">{service.description}</p>
+                    <Link to={service.link}>
+                      <Button className="w-full">Sužinoti daugiau</Button>
+                    </Link>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {services.map((service) => (
+              <div 
+                key={service.id}
+                className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <img 
+                    src={service.imageSrc} 
+                    alt={service.title} 
+                    className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80";
+                    }}
+                  />
+                </div>
+                <div className="text-4xl mb-4">{service.icon}</div>
+                <h3 className="text-xl font-bold text-forest-700 mb-3">{service.title}</h3>
+                <p className="text-gray-600 mb-6">{service.description}</p>
+                <Link to={service.link}>
+                  <Button variant="outline" className="w-full">
+                    Sužinoti daugiau
+                  </Button>
+                </Link>
               </div>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-forest-600 mb-2">Moderni įranga</h3>
-                <p className="text-gray-700">
-                  Naudojame galingą ir modernią kelmų frezavimo techniką, kuri efektyviai pašalina 
-                  bet kokio dydžio kelmus iki žemės paviršiaus lygio.
-                </p>
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="aspect-video overflow-hidden">
-                <img 
-                  src="https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//0b8f6b8d-290a-4863-9602-1dc5d962610a.png" 
-                  alt="Prieš ir po kelmo frezavimo" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-forest-600 mb-2">Akivaizdūs rezultatai</h3>
-                <p className="text-gray-700">
-                  Mūsų teikiamos paslaugos rezultatai akivaizdžiai matomi prieš ir po darbų. 
-                  Visiems darbams suteikiame garantiją.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

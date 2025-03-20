@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import Contact from "@/components/Contact";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
 
 interface ServiceLayoutProps {
   title: string;
@@ -14,9 +15,10 @@ const ServiceLayout = ({ title, children, imageSrc }: ServiceLayoutProps) => {
   const navigate = useNavigate();
   
   return (
-    <div className="pt-24 bg-background min-h-screen">
+    <div className="bg-background min-h-screen">
+      <Header />
       {/* Hero Section */}
-      <section className="bg-forest-700 py-16 text-white">
+      <section className="bg-forest-700 py-16 text-white mt-24">
         <div className="container mx-auto px-4">
           <Button 
             variant="outline" 
@@ -40,6 +42,10 @@ const ServiceLayout = ({ title, children, imageSrc }: ServiceLayoutProps) => {
                     src={imageSrc} 
                     alt={title} 
                     className="w-full h-64 object-cover rounded-lg mb-8"
+                    onError={(e) => {
+                      // Fallback image if the provided one fails to load
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1000&q=80";
+                    }}
                   />
                 )}
                 {children}
