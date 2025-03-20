@@ -1,8 +1,11 @@
 
 import { useEffect, useRef } from "react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const About = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -29,6 +32,48 @@ const About = () => {
     };
   }, []);
 
+  const renderContent = () => {
+    const paragraphs = [
+      {
+        title: "Mūsų istorija",
+        content: "Esame užsitarnavę klientų pasitikėjimą, teikdami modernias aplinkos tvarkymo paslaugas visoje Lietuvoje. Dirbame ištisus metus, septynias dienas per savaitę – ir taip jau daugiau nei devynis metus, tad natūralu, jog esame tikri aplinkos tvarkymo profesionalai."
+      },
+      {
+        title: "Mūsų inovacijos",
+        content: "Mūsų įmonė viena iš pirmųjų Lietuvoje pradėjo mechanizuotu būdu frezuoti krūmus ir naikinti kelmus. Dirbame ištisus metus ŽIEMĄ, PAVASARĮ, VASARĄ, RUDENĮ! Aplinkos tvarkymas su mumis neturi sezoniškumo apribojimų!"
+      },
+      {
+        title: "Ekspertai ir įgūdžiai",
+        content: "Mūsų komanda apjungia profesionalių arboristų žinias su pramoninio alpinizmo įgūdžiais, todėl galime pasiūlyti visapusiškas aplinkos tvarkymo ir priežiūros paslaugas. Mūsų ekspertai pasirengę įgyvendinti sudėtingiausius projektus, užtikrindami aukščiausią kokybę ir saugumą."
+      }
+    ];
+
+    if (isMobile) {
+      return (
+        <Accordion type="single" collapsible className="w-full">
+          {paragraphs.map((paragraph, index) => (
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger className="text-left font-semibold text-forest-600">
+                {paragraph.title}
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className="text-gray-700">{paragraph.content}</p>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      );
+    }
+
+    return (
+      <div className="space-y-4 section-text">
+        {paragraphs.map((paragraph, index) => (
+          <p key={index}>{paragraph.content}</p>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <section id="apie-mus" className="section-padding bg-gray-50" ref={sectionRef}>
       <div className="section-container">
@@ -36,27 +81,7 @@ const About = () => {
           <div>
             <div className="animate-on-scroll">
               <h2 className="section-title">Apie mus</h2>
-              <div className="space-y-4 section-text">
-                <p>
-                  Esame užsitarnavę klientų pasitikėjimą, teikdami modernias 
-                  aplinkos tvarkymo paslaugas visoje Lietuvoje. Dirbame 
-                  ištisus metus, septynias dienas per savaitę – ir taip jau 
-                  daugiau nei devynis metus, tad natūralu, jog esame tikri 
-                  aplinkos tvarkymo profesionalai.
-                </p>
-                <p>
-                  Mūsų įmonė viena iš pirmųjų Lietuvoje pradėjo mechanizuotu 
-                  būdu frezuoti krūmus ir naikinti kelmus. Dirbame ištisus metus 
-                  ŽIEMĄ, PAVASARĮ, VASARĄ, RUDENĮ! Aplinkos tvarkymas su mumis 
-                  neturi sezoniškumo apribojimų!
-                </p>
-                <p>
-                  Mūsų komanda apjungia profesionalių arboristų žinias su pramoninio alpinizmo 
-                  įgūdžiais, todėl galime pasiūlyti visapusiškas aplinkos tvarkymo ir priežiūros 
-                  paslaugas. Mūsų ekspertai pasirengę įgyvendinti sudėtingiausius projektus, 
-                  užtikrindami aukščiausią kokybę ir saugumą.
-                </p>
-              </div>
+              {renderContent()}
             </div>
           </div>
           
