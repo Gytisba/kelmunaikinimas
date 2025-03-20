@@ -1,6 +1,19 @@
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const serviceLinks = [
+  { name: "Pavojingų medžių pjovimas", path: "/paslauga/pavojingu-medziu-pjovimas" },
+  { name: "Kelmų frezavimas", path: "/paslauga/kelmu-frezavimas" },
+  { name: "Pramoninis alpinizmas", path: "/paslauga/pramoninis-alpinizmas" },
+];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,6 +37,13 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const menuItems = [
+    { name: "Pagrindinis", path: "/" },
+    { name: "Apie mus", path: "/#apie-mus" },
+    { name: "Kainos", path: "/#kainos" },
+    { name: "Kontaktai", path: "/#kontaktai" },
+  ];
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -33,29 +53,53 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <a href="#" className="flex items-center">
+        <Link to="/" className="flex items-center">
           <span className="text-2xl font-heading font-bold text-forest-700">
-            Kelmų Naikinimas
+            Zemex
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          {["Pagrindinis", "Apie mus", "Paslaugos", "Kainos", "Kontaktai"].map(
-            (item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className={`font-medium transition-colors duration-200 ${
-                  isScrolled
-                    ? "text-forest-700 hover:text-forest-500"
-                    : "text-white hover:text-forest-100"
-                }`}
-              >
-                {item}
-              </a>
-            )
-          )}
+          {menuItems.map((item) => (
+            <Link
+              key={item.name}
+              to={item.path}
+              className={`font-medium transition-colors duration-200 ${
+                isScrolled
+                  ? "text-forest-700 hover:text-forest-500"
+                  : "text-white hover:text-forest-100"
+              }`}
+            >
+              {item.name}
+            </Link>
+          ))}
+          
+          {/* Services Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger 
+              className={`flex items-center font-medium transition-colors duration-200 ${
+                isScrolled
+                  ? "text-forest-700 hover:text-forest-500"
+                  : "text-white hover:text-forest-100"
+              }`}
+            >
+              Paslaugos <ChevronDown className="ml-1 h-4 w-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="bg-white shadow-md rounded-md p-2 min-w-[200px] z-50">
+              {serviceLinks.map((service) => (
+                <DropdownMenuItem key={service.path} asChild>
+                  <Link 
+                    to={service.path}
+                    className="w-full px-2 py-2 text-forest-700 hover:text-forest-500 hover:bg-forest-50 rounded"
+                    onClick={closeMobileMenu}
+                  >
+                    {service.name}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
 
         {/* Mobile Navigation Toggle */}
@@ -80,18 +124,33 @@ const Header = () => {
       >
         <div className="container mx-auto py-4">
           <nav className="flex flex-col space-y-4 px-4">
-            {["Pagrindinis", "Apie mus", "Paslaugos", "Kainos", "Kontaktai"].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
-                  className="font-medium text-forest-700 hover:text-forest-500 py-2"
-                  onClick={closeMobileMenu}
-                >
-                  {item}
-                </a>
-              )
-            )}
+            {menuItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="font-medium text-forest-700 hover:text-forest-500 py-2"
+                onClick={closeMobileMenu}
+              >
+                {item.name}
+              </Link>
+            ))}
+            
+            {/* Mobile Services Menu */}
+            <div className="py-2">
+              <h3 className="font-medium text-forest-700 mb-2">Paslaugos:</h3>
+              <div className="space-y-2 pl-4">
+                {serviceLinks.map((service) => (
+                  <Link
+                    key={service.path}
+                    to={service.path}
+                    className="block text-forest-600 hover:text-forest-500 py-1"
+                    onClick={closeMobileMenu}
+                  >
+                    {service.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </nav>
         </div>
       </div>
