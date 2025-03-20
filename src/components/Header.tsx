@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,10 @@ const serviceLinks = [
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  
+  // Check if we're on a service page
+  const isServicePage = location.pathname.includes('/paslauga/');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +51,7 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+        isScrolled || isServicePage
           ? "bg-white bg-opacity-90 backdrop-blur-md shadow-md py-3"
           : "bg-transparent py-5"
       }`}
@@ -66,7 +70,7 @@ const Header = () => {
               key={item.name}
               to={item.path}
               className={`font-medium transition-colors duration-200 ${
-                isScrolled
+                isScrolled || isServicePage
                   ? "text-forest-700 hover:text-forest-500"
                   : "text-white hover:text-forest-100"
               }`}
@@ -79,7 +83,7 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger 
               className={`flex items-center font-medium transition-colors duration-200 ${
-                isScrolled
+                isScrolled || isServicePage
                   ? "text-forest-700 hover:text-forest-500"
                   : "text-white hover:text-forest-100"
               }`}
@@ -109,9 +113,9 @@ const Header = () => {
           aria-label="Toggle Menu"
         >
           {isMobileMenuOpen ? (
-            <X className={`w-8 h-8 ${isScrolled ? "text-forest-700" : "text-white"}`} />
+            <X className={`w-8 h-8 ${isScrolled || isServicePage ? "text-forest-700" : "text-white"}`} />
           ) : (
-            <Menu className={`w-8 h-8 ${isScrolled ? "text-forest-700" : "text-white"}`} />
+            <Menu className={`w-8 h-8 ${isScrolled || isServicePage ? "text-forest-700" : "text-white"}`} />
           )}
         </button>
       </div>

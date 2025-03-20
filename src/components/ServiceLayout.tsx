@@ -1,8 +1,6 @@
 
 import { ReactNode } from "react";
 import Contact from "@/components/Contact";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 
 interface ServiceLayoutProps {
@@ -12,21 +10,12 @@ interface ServiceLayoutProps {
 }
 
 const ServiceLayout = ({ title, children, imageSrc }: ServiceLayoutProps) => {
-  const navigate = useNavigate();
-  
   return (
     <div className="bg-background min-h-screen">
       <Header />
       {/* Hero Section */}
       <section className="bg-forest-700 py-16 text-white mt-24">
         <div className="container mx-auto px-4">
-          <Button 
-            variant="outline" 
-            onClick={() => navigate(-1)}
-            className="mb-6 text-white border-white hover:bg-white hover:text-forest-700"
-          >
-            ← Grįžti atgal
-          </Button>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
         </div>
       </section>
@@ -56,12 +45,12 @@ const ServiceLayout = ({ title, children, imageSrc }: ServiceLayoutProps) => {
               <div className="bg-forest-50 p-6 rounded-lg sticky top-24">
                 <h3 className="text-xl font-bold text-forest-700 mb-4">Reikia konsultacijos?</h3>
                 <p className="mb-4">Susisiekite su mumis ir mes mielai atsakysime į visus jūsų klausimus.</p>
-                <Button 
+                <button 
                   onClick={() => document.getElementById('kontaktai')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full"
+                  className="w-full bg-forest-700 hover:bg-forest-600 text-white py-2 px-4 rounded transition-colors"
                 >
                   Susisiekti
-                </Button>
+                </button>
               </div>
             </div>
           </div>
