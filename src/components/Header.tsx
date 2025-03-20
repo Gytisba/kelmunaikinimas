@@ -22,6 +22,7 @@ const Header = () => {
   
   // Check if we're on a service page
   const isServicePage = location.pathname.includes('/paslauga/');
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,11 +42,24 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const handleSectionClick = (sectionId: string, e: React.MouseEvent) => {
+    if (!isHomePage) {
+      return; // Don't prevent default if not on home page
+    }
+    
+    e.preventDefault();
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      closeMobileMenu();
+    }
+  };
+
   const menuItems = [
-    { name: "Pagrindinis", path: "/" },
-    { name: "Apie mus", path: "/#apie-mus" },
-    { name: "Kainos", path: "/#kainos" },
-    { name: "Kontaktai", path: "/#kontaktai" },
+    { name: "Pagrindinis", path: "/", sectionId: null },
+    { name: "Apie mus", path: "/#apie-mus", sectionId: "apie-mus" },
+    { name: "Kainos", path: "/#kainos", sectionId: "kainos" },
+    { name: "Kontaktai", path: "/#kontaktai", sectionId: "kontaktai" },
   ];
 
   return (
@@ -69,6 +83,7 @@ const Header = () => {
             <Link
               key={item.name}
               to={item.path}
+              onClick={(e) => item.sectionId && handleSectionClick(item.sectionId, e)}
               className={`font-medium transition-colors duration-200 ${
                 isScrolled || isServicePage
                   ? "text-forest-700 hover:text-forest-500"
@@ -132,8 +147,11 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.path}
+                onClick={(e) => {
+                  if (item.sectionId) handleSectionClick(item.sectionId, e);
+                  else closeMobileMenu();
+                }}
                 className="font-medium text-forest-700 hover:text-forest-500 py-2"
-                onClick={closeMobileMenu}
               >
                 {item.name}
               </Link>
