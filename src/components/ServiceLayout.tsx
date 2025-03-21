@@ -15,9 +15,9 @@ const ServiceLayout = ({ title, children, imageSrc }: ServiceLayoutProps) => {
       <Header />
       {/* Hero Section with improved design */}
       <section className="relative mt-24">
-        <div className="bg-gradient-to-b from-forest-700 to-forest-600 py-16 text-white">
+        <div className="bg-gradient-to-b from-forest-200 to-forest-300 py-16">
           <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-forest-700">{title}</h1>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent"></div>
@@ -50,7 +50,7 @@ const ServiceLayout = ({ title, children, imageSrc }: ServiceLayoutProps) => {
                 <p className="mb-4">Susisiekite su mumis ir mes mielai atsakysime į visus jūsų klausimus.</p>
                 <button 
                   onClick={() => document.getElementById('kontaktai')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="w-full bg-forest-700 hover:bg-forest-600 text-white py-2 px-4 rounded transition-colors"
+                  className="w-full bg-forest-500 hover:bg-forest-600 text-white py-2 px-4 rounded transition-colors"
                 >
                   Susisiekti
                 </button>
