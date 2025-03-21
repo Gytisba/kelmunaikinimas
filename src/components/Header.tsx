@@ -31,6 +31,8 @@ const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+    // Trigger initial check to handle service pages correctly
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -67,7 +69,7 @@ const Header = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || isServicePage
           ? "bg-white bg-opacity-90 backdrop-blur-md shadow-md py-3"
-          : "bg-transparent py-5"
+          : "bg-forest-700 bg-opacity-90 py-5"
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">

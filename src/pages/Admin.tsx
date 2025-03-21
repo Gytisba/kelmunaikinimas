@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import MessagesList from "@/components/admin/MessagesList";
 import AdminLayout from "@/components/admin/AdminLayout";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Admin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const checkSession = async () => {

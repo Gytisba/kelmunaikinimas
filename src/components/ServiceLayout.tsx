@@ -13,11 +13,14 @@ const ServiceLayout = ({ title, children, imageSrc }: ServiceLayoutProps) => {
   return (
     <div className="bg-background min-h-screen">
       <Header />
-      {/* Hero Section */}
-      <section className="bg-forest-700 py-16 text-white mt-24">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+      {/* Hero Section with improved design */}
+      <section className="relative mt-24">
+        <div className="bg-gradient-to-b from-forest-700 to-forest-600 py-16 text-white">
+          <div className="container mx-auto px-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{title}</h1>
+          </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background to-transparent"></div>
       </section>
       
       {/* Content Section */}
