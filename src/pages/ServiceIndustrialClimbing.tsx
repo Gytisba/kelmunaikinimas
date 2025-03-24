@@ -5,7 +5,7 @@ const ServiceIndustrialClimbing = () => {
   return (
     <ServiceLayout 
       title="Pramoninis alpinizmas"
-      imageSrc="public/lovable-uploads/9b0f3f51-b364-4e82-8dff-2b4ed0ea1774.png"
+      imageSrc="https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//pramoninis.jpg"
       overlayColor="from-slate-900/60"
     >
       <h2 className="text-2xl font-bold text-forest-700 mb-4">Pramoninis alpinizmas: veikla, pritaikymas ir svarba</h2>
