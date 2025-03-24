@@ -44,25 +44,22 @@ const Services = () => {
       id: "tree-cutting",
       title: "Pavojingų medžių pjovimas",
       description: "Saugus ir profesionalus pavojingų medžių pjovimas bei genėjimas net ir sudėtingose vietose.",
-      icon: "🌳",
       link: "/paslauga/pavojingu-medziu-pjovimas",
-      imageSrc: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&w=1000&q=80"
+      imageSrc: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//pavojingu%20medziu%20pjovimas.webp"
     },
     {
       id: "stump-grinding",
       title: "Kelmų frezavimas",
       description: "Efektyvus ir ekologiškas būdas pašalinti medžių kelmus be didelių kasimo darbų.",
-      icon: "🪓",
       link: "/paslauga/kelmu-frezavimas",
-      imageSrc: "https://images.unsplash.com/photo-1621458036320-4922b2d28b6f?auto=format&fit=crop&w=1000&q=80"
+      imageSrc: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//Kelmu_frezavimas.png"
     },
     {
       id: "industrial-climbing",
       title: "Pramoninis alpinizmas",
       description: "Specializuota veikla, leidžianti atlikti įvairius darbus sunkiai pasiekiamose vietose.",
-      icon: "🧗",
       link: "/paslauga/pramoninis-alpinizmas",
-      imageSrc: "https://images.unsplash.com/photo-1610569244414-5e7427e8f3c5?auto=format&fit=crop&w=1000&q=80"
+      imageSrc: "https://sxzpjfqdxpeyksfmjqii.supabase.co/storage/v1/object/public/project_images//pramoninis.jpg"
     }
   ];
 
@@ -81,7 +78,7 @@ const Services = () => {
             {services.map((service) => (
               <AccordionItem key={service.id} value={service.id}>
                 <AccordionTrigger className="text-left text-lg font-medium">
-                  <span className="mr-2">{service.icon}</span> {service.title}
+                  {service.title}
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="mt-2 mb-4">
@@ -119,7 +116,6 @@ const Services = () => {
                     }}
                   />
                 </div>
-                <div className="text-4xl mb-4">{service.icon}</div>
                 <h3 className="text-xl font-bold text-forest-700 mb-3">{service.title}</h3>
                 <p className="text-gray-600 mb-6">{service.description}</p>
                 <Link to={service.link}>
