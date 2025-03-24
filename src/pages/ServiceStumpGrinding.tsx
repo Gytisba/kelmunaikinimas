@@ -5,7 +5,8 @@ const ServiceStumpGrinding = () => {
   return (
     <ServiceLayout 
       title="Kelmų frezavimas"
-      imageSrc="https://images.unsplash.com/photo-1621458036320-4922b2d28b6f?auto=format&fit=crop&w=1000&q=80"
+      imageSrc="public/lovable-uploads/535eb57c-eb4b-454f-aac8-6798ca65f763.png"
+      overlayColor="from-earth-900/60"
     >
       <h2 className="text-2xl font-bold text-forest-700 mb-4">Kelmų frezavimas su freza: procesas ir nauda</h2>
       

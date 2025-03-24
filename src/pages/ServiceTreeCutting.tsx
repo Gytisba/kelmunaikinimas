@@ -5,7 +5,8 @@ const ServiceTreeCutting = () => {
   return (
     <ServiceLayout 
       title="Pavojingų medžių pjovimas ir genėjimas"
-      imageSrc="https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&w=1000&q=80"
+      imageSrc="public/lovable-uploads/b7034c0d-c215-498e-9011-d37aa99ca6b3.png"
+      overlayColor="from-forest-900/60"
     >
       <h2 className="text-2xl font-bold text-forest-700 mb-4">Profesionalus pavojingų medžių pjovimas ir genėjimas</h2>
       
